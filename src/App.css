@@ -1,1 +1,3 @@
-/* css global */
+* {
+  box-sizing: border-box;
+}
