@@ -3,8 +3,10 @@ import { Navigate, Routes, Route, useLocation } from 'react-router';
 //import { AuthProvider } from './context/AuthProvider';
 import Login from './pages/Login';
 //import Orders from './pages/Orders';
-//import Tracking from './pages/Tracking';
+import Tracking from './pages/Tracking';
 import './app.css';
+
+// import { Button } from 'reactstrap';
 
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
 // function Auth({ children }) {
@@ -17,7 +19,7 @@ import './app.css';
 //   );
 // }
 
-function App() {
+function App(props) {
   return (
     //<AuthProvider>
       <div className="app">
@@ -33,6 +35,7 @@ function App() {
               <Tracking />
             //</Auth>
           } /> */}
+          <Route path='/tracking' element={<Tracking/>}/>
         </Routes>
       </div>
     //</AuthProvider>
