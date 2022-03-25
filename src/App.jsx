@@ -19,7 +19,7 @@ import './app.css';
 //   );
 // }
 
-function App(props) {
+function App() {
   return (
     //<AuthProvider>
       <div className="app">

@@ -1,16 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, FormGroup, Label, Input, FormFeedback, FormText, Button } from 'reactstrap'
+//import { useNavigate } from 'react-router-dom';
 //import useAuth from '../../hooks/useAuth';
 import './login.css';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-
-// import { Button } from 'reactstrap';
+import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
 
 function Login() {
   //const { setAuthData } = useAuth();
   const [ user, setUser ] = useState({ email: '', password: ''});
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   
   //[inputs controlados] guardando o que o usuário digitar
   const handleChange = (prop) => event => {
