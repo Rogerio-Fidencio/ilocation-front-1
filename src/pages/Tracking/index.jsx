@@ -82,7 +82,7 @@ export default function Tracking() {
           lat: coords[0],
           lng: coords[1]
         }}
-          zoom={13}
+          zoom={13} 
           // whenCreated={() => { }}
         >
           <TileLayer
