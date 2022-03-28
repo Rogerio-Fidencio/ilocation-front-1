@@ -4,6 +4,7 @@ import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
 import "./tracking.css"
 import useGetLocation from '../../hooks/useGetLocation'
 import { useState } from 'react';
+import Header from '../../Components/Header';
 
 export default function Tracking() {
   const [ change, setChange ] = useState(true);
@@ -62,20 +63,18 @@ export default function Tracking() {
 
   return (
     <>
-      <div className="container">
-        <div className="row header-titulo">
-          <p className="titulo-pedido">Pedidos</p>
-        </div>
+      {/* <div className="container"> */}
+      <Header title='Pedidos' />
         <div className="row cliente">
           <p className="cliente-pedido">Cliente: Ze endereco: Rua 1, vila 1, cidade um</p>
         </div>
-      </div>
+      {/* </div> */}
 
-      <h3>
+      {/* <h3>
         Latitude: {coords[0]} <br />
         Longitude: {coords[1]} <br />
         TimeStamp: {coords[2]}
-      </h3>
+      </h3> */}
 
       <div className="container container-map">
         <MapContainer center={{
