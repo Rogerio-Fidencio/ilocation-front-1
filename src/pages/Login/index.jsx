@@ -3,6 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
 
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup
+} from 'react-leaflet'
+
 import './login.css';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
@@ -62,6 +69,19 @@ function Login() {
         </FormGroup>
         <Button>Submit</Button>
       </Form>
+        <MapContainer center={{
+        lat: 12,
+        lng: 23
+      }}
+        zoom={13}
+        whenCreated={() => { }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={[51.505, -0.09]}/>
+      </MapContainer>
      </>
   );
 }

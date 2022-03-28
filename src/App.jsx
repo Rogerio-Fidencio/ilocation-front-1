@@ -6,8 +6,6 @@ import Login from './pages/Login';
 import Tracking from './pages/Tracking';
 import './app.css';
 
-// import { Button } from 'reactstrap';
-
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
 function Auth({ children }) {
   const { getToken } = useAuth();
@@ -21,12 +19,7 @@ function Auth({ children }) {
 
 function App(props) {
   return (
-
-
-
     //<AuthProvider>
-
-
       <div className="App">
         <Routes>
           <Route path='/login' element={<Login />} />
@@ -44,22 +37,11 @@ function App(props) {
           } /> */}
 
           <Route path='/tracking' element={<Tracking/>}/>
-
-          
         </Routes>
       </div>
-
-
     //</AuthProvider>
   );
 }
 
-// function App(props){
-//   return(
-//     <div>
-//        <Button color="danger">Danger!</Button>
-//     </div>
-//   )
-// }
 
 export default App;
