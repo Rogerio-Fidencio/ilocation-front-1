@@ -42,7 +42,7 @@ function useAuthState() {
     setAuthData,
     getToken,
     logout
-  }
+  };
 }
 
 export default useAuthState;
