@@ -1,88 +1,111 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import useAuth from '../../hooks/useAuth';
-
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  Popup
-} from 'react-leaflet'
-
+//import useAuth from '../../hooks/useAuth';
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
+import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
+//import pinIcon from '../../assets/ilocation-logo.svg';
 import './login.css';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-
-// import { Button } from 'reactstrap';
 
 function Login() {
-  // const { setAuthData } = useAuth();
+  //const { setAuthData } = useAuth();
   const [ user, setUser ] = useState({ email: '', password: ''});
+  const [ error, setError ] = useState({ email: '', password: '' });
   const navigate = useNavigate();
   
   //[inputs controlados] guardando o que o usuário digitar
   const handleChange = (prop) => event => {
     setUser({ ...user, [prop]: event.target.value });
-  }
+  };
 
   const handleLogin = async(event) => {
     event.preventDefault();
 
-    //** validação básica de usuário **
-    
-    const userData = {}; //para mandar pro back
-
-    try {
-      const request = await fetch('endpoint de login', {
-        method: 'metodo do endpoint',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      });
-
-      const response = await request.json();
-
-      //**tratamento do response **
-
-      // setAuthData({
-        // token: response.token,
-        // idUser: response.id,
-      // });
-
-      navigate('/orders', { replace: true });
-    } catch (error) {
-      //**tratativa de erro no back
-      //navigate('/server_internal_error', { replace: true });
+    if (!user.email || !user.password) {
+      if (!user.email) {
+        setError({ email: '*Campo obrigatório', password: '' });
+      }
+      if (!user.password) {
+        setError({ email: '', password: '*Campo obrigatório' });
+      }
+      if (!user.email && !user.password) {
+        setError({ email: '*Campo obrigatório', password: '*Campo obrigatório' });
+      }
+      return;
     }
-  }
+
+    setError({ password: '', email: '' });
+    
+    // const userData = {}; //para mandar pro back
+
+    // try {
+    //   const request = await fetch('endpoint de login', {
+    //     method: 'metodo do endpoint',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(userData)
+    //   });
+
+    //   const response = await request.json();
+
+    //   //**tratamento do response **
+
+    //   setAuthData({
+    //     token: response.token,
+    //     idUser: response.id,
+    //   });
+
+    navigate('/orders', { replace: true });
+    // } catch (error) {
+    //   //navigate('/server_internal_error', { replace: true });
+    // }
+  };
+
   return (
     <>
-      <Form>
-      <FormGroup>
-          <Label for="exampleEmail">Email</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+      {/* <header>
+        iLocati
+        <img className="pin-icon" src={pinIcon} alt="pin map icon" />
+        n
+      </header> */}
+      <Form className='form'>
+        <FormGroup className='form-group'>
+          <Label className='form-label' for="email">Email</Label>
+          <Input 
+            className='form-input' 
+            type='email' 
+            onChange={handleChange('email')} 
+            invalid={error.email} 
+          />
+          <FormFeedback>
+            {error.email && '*Campo obrigatório'}
+          </FormFeedback>
         </FormGroup>
-        <FormGroup>
-          <Label for="examplePassword">Password</Label>
-          <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+        <FormGroup className='form-group'>
+          <Label className='form-label' for="password">Senha</Label>
+          <Input
+            className='form-input' 
+            type='password' 
+            onChange={handleChange('password')} 
+            invalid={error.password} 
+          />
+          <FormFeedback>
+          {error.password && '*Campo obrigatório'}
+          </FormFeedback>
         </FormGroup>
-        <Button>Submit</Button>
+
+          {/* <FormGroup className="position-relative">
+            <FormFeedback tooltip valid>
+              Mensagem positiva em estilo diferente!
+            </FormFeedback>
+            <FormText>exemplo: usuario@usuario.com</FormText>
+          </FormGroup> */}
+
+        <Button className='form-btn' onClick={handleLogin} color='danger' outline>
+          Entrar
+        </Button>
       </Form>
-        <MapContainer center={{
-        lat: 12,
-        lng: 23
-      }}
-        zoom={13}
-        whenCreated={() => { }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={[51.505, -0.09]}/>
-      </MapContainer>
-     </>
+    </>
   );
 }
 
