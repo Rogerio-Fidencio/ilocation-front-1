@@ -1,16 +1,60 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-basis: auto;
+}
+
+.ilocation-logo {
+  min-width: 300px;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: #9C050B;
+  background-image: url('../../assets/Delivery-Ifood.jpeg');
+  background-repeat: no-repeat;
+}
+
+.logo-icon {
+  width: 3rem;
+  height: 3rem;
+  margin-top: 1rem;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rem;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.container-label {
+  width: 90%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* colocar so nas telas pequenas */
+.container-label.first {
+  padding-top: 5rem;
 }
 
 .form-label {
   color: #3F3E3E;
 }
 
+.form-group {
+  width: 90%;
+}
+
 .form-input {
-  width: 250px;
+  width: 100%;
+  margin-bottom: .3rem;
 }
 
 .form-input:focus {
@@ -19,7 +63,14 @@
 }
 
 .form-btn {
-  padding: .375rem 1rem;
-  margin-top: .2rem;
+  width: 90%;
+  /* padding: .375rem 1.5rem; */
+  margin-top: 1.5rem;
+  color: #9C050B;
+  border-color: #9C050B;
   transition: all ease-in .3s;
+}
+
+.form-btn:hover {
+  background-color: #9C050B;
 }

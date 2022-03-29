@@ -37,7 +37,7 @@ function Orders() {
 
   // const handleLoadList = async() => {
   //   try {
-  //     const request = await fetch('endpoint de lista de pedidos', {
+  //     const request = await fetch('https://ilocation.herokuapp.com/api/v1/order', {
   //       method: 'metodo do endpoint',
   //       headers: {
   //         'Content-Type': 'application/json'
@@ -63,8 +63,8 @@ function Orders() {
 
   // const handleTrackingAssign = () => {
   //   try {
-  //     const request = await fetch('endpoint de atribuição de pedido', {
-  //       method: 'metodo do endpoint',
+  //     const request = await fetch(`https://ilocation.herokuapp.com/api/v1/assign/${infoModal.id}`, {
+  //       method: 'PATCH',
   //       headers: {
   //         'Content-type': 'application/json'
   //       }

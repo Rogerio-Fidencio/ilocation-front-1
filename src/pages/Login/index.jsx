@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import useAuth from '../../hooks/useAuth';
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
-//import pinIcon from '../../assets/ilocation-logo.svg';
+import pinIcon from '../../assets/ilocation-logo.svg';
 import './login.css';
 
 function Login() {
@@ -32,17 +32,28 @@ function Login() {
       return;
     }
 
-    setError({ password: '', email: '' });
+    const input = user.email.replace(' ', '');
+
+    if (Number(input)) {
+      if (input.length !== 11) {
+        setError({ email: '*Formato inválido', password: '' });
+        return;
+      }
+
+      setUser({ ...user, email: input });
+    }
+
+    setError({ email: '', password: '' });
     
-    // const userData = {}; //para mandar pro back
+    // const userData = { ...user }; //para mandar pro back
 
     // try {
-    //   const request = await fetch('endpoint de login', {
-    //     method: 'metodo do endpoint',
+    //   const request = await fetch('https://ilocation.herokuapp.com/login', {
+    //     method: 'POST',
     //     headers: {
     //       'Content-Type': 'application/json'
     //     },
-    //     body: JSON.stringify(userData)
+    //     body: JSON.stringify(user)
     //   });
 
     //   const response = await request.json();
@@ -51,7 +62,6 @@ function Login() {
 
     //   setAuthData({
     //     token: response.token,
-    //     idUser: response.id,
     //   });
 
     navigate('/orders', { replace: true });
@@ -61,18 +71,22 @@ function Login() {
   };
 
   return (
-    <>
-      {/* <header>
+    <div className='login-container'>
+      <header className='ilocation-logo'>
         iLocati
-        <img className="pin-icon" src={pinIcon} alt="pin map icon" />
+        <img className="logo-icon" src={pinIcon} alt="pin map icon" />
         n
-      </header> */}
+      </header>
       <Form className='form'>
+        <div className='container-label first'>
+          <Label className='form-label' for="email">
+            Email ou telefone
+          </Label>
+        </div>
         <FormGroup className='form-group'>
-          <Label className='form-label' for="email">Email</Label>
           <Input 
             className='form-input' 
-            type='email' 
+            type='email'
             onChange={handleChange('email')} 
             invalid={error.email} 
           />
@@ -80,11 +94,14 @@ function Login() {
             {error.email && '*Campo obrigatório'}
           </FormFeedback>
         </FormGroup>
-        <FormGroup className='form-group'>
+
+        <div className='container-label'>
           <Label className='form-label' for="password">Senha</Label>
+        </div>
+        <FormGroup className='form-group'>
           <Input
             className='form-input' 
-            type='password' 
+            type='password'
             onChange={handleChange('password')} 
             invalid={error.password} 
           />
@@ -100,11 +117,11 @@ function Login() {
             <FormText>exemplo: usuario@usuario.com</FormText>
           </FormGroup> */}
 
-        <Button className='form-btn' onClick={handleLogin} color='danger' outline>
+        <Button className='form-btn' onClick={handleLogin} outline>
           Entrar
         </Button>
       </Form>
-    </>
+    </div>
   );
 }
 
