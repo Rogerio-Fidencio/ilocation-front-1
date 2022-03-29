@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import useAuth from '../../hooks/useAuth';
-import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
 //import pinIcon from '../../assets/ilocation-logo.svg';
 import './login.css';
@@ -75,7 +74,7 @@ function Login() {
             className='form-input' 
             type='email' 
             onChange={handleChange('email')} 
-            invalid={error.email} 
+            invalid={error.email ? true : false} 
           />
           <FormFeedback>
             {error.email && '*Campo obrigatório'}
@@ -87,7 +86,7 @@ function Login() {
             className='form-input' 
             type='password' 
             onChange={handleChange('password')} 
-            invalid={error.password} 
+            invalid={error.password ? true : false} 
           />
           <FormFeedback>
           {error.password && '*Campo obrigatório'}
