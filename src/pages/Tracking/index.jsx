@@ -3,78 +3,70 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
 import "./tracking.css"
 import useGetLocation from '../../hooks/useGetLocation'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
+import useAuth from '../../hooks/useAuth';
 
 export default function Tracking() {
   const [ change, setChange ] = useState(true);
   const { coords } = useGetLocation();
+  const[ lastCoords, setLastCoords ] = useState({
+    timestamp: 1,
+    longitude: 1,
+    latitude: 1
+  });
+  let timeOut = null;
+
 
   if (!coords) {
     return <h1>Obtendo localização ...</h1>
   }
 
-  function handleChange(){
-    while(change){
-      handleGeolocation()
-    }
-      setChange(!change)
-      // navigate('/orders', { replace: true });
-  }
+  handleGeolocation();
 
-  const handleGeolocation = async(event) => {
-    event.preventDefault();
-
-    //** validação básica de usuário **
-    
-    const userCoords = {
-      latitude: coords[0],
+  async function handleGeolocation() {
+    console.log("oii")
+    console.log(coords)
+    const  userCoords = {
+      timestamp: coords[2],
       longitude: coords[1],
-      timeStamp: coords[2]
-    }; //para mandar pro back
+      latitude: coords[0]
+    }; 
+    if(userCoords.latitude === lastCoords.latitude && userCoords.longitude === lastCoords.longitude){
+      console.log("mesma coisa carai")
+      
+      return
+    }
+    setLastCoords(userCoords);
+    console.log(coords)
+    console.log(userCoords)
+
 
     try {
-      const request = await fetch('endpoint de geolocation', {
-        method: 'POST',
+      const request = await fetch('http://localhost:8080/api/v1/geolocation', {
+        method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIZW5yaXF1ZUBFbWFpbC5jb20iLCJpc3MiOiJBZG1pbiIsImV4cCI6MTY0ODY3MzgwMCwidXNlciI6IntcImlkXCI6MTEsXCJuYW1lXCI6XCJIZW5yaXF1ZVwiLFwicGhvbmVcIjpcIjY1NDM4NzY5MDc2XCJ9In0.BenqdUFzPS2LXBYi-1CmqXrZXukMtwi4AgEn0FDKAH8"
         },
         body: JSON.stringify(userCoords)
       })
-        .then((response) => response.json())
-        .then((userCoords) => {
-          console.log("Success:", userCoords);
-        })
-      // const response = await request.json();
+      console.log(await request.status);
 
-      //**tratamento do response **
-
-      // setAuthData({
-        // token: response.token,
-        // idUser: response.id,
-      // });
-
-      // navigate('/orders', { replace: true });
     } catch (error) {
-      //**tratativa de erro no back
-      //navigate('/server_internal_error', { replace: true });
+      console.log(error.message)
     }
   }
 
+
+
+
   return (
     <>
-      {/* <div className="container"> */}
       <Header title='Pedidos' />
         <div className="row cliente">
           <p className="cliente-pedido">Cliente: Ze endereco: Rua 1, vila 1, cidade um</p>
         </div>
-      {/* </div> */}
-
-      {/* <h3>
-        Latitude: {coords[0]} <br />
-        Longitude: {coords[1]} <br />
-        TimeStamp: {coords[2]}
-      </h3> */}
 
       <div className="container container-map">
         <MapContainer center={{
@@ -82,7 +74,6 @@ export default function Tracking() {
           lng: coords[1]
         }}
           zoom={13} 
-          // whenCreated={() => { }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -97,10 +88,10 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
-        {/* <button type="submit" className="btn btn-primary btn-verde " onClick={handleChange()}>Concluir</button>
-        <button type="submit" className="btn btn-primary " onClick={handleChange()}>Cancelar</button> */}
+
         <button type="submit" className="btn-tracking btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
         <button type="submit" className="btn-tracking btn-primary " onClick={() => handleChange()}><a href="./pedidos.html">Cancelar</a></button>
+
       </div>
     </>
   )
