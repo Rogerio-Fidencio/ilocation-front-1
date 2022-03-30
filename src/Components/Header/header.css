@@ -1,0 +1,25 @@
+.header-title {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 30px 30px;
+  background-color: #EA1D2C;
+}
+
+.title-order {
+  text-align: center;
+  font-size: 22px;
+  color: #FFFFFF;
+}
+
+.client{
+  border-radius: 0 0 30px 30px;
+  background-color: #a6a29f44;
+}
+
+.client-order{
+  font-size: 18px;
+  color: #A6A29F;
+  padding-top: 20px;
+}

@@ -1,12 +1,11 @@
 import { Navigate, Routes, Route, useLocation } from 'react-router';
 //import useAuth from './hooks/useAuth';
 //import { AuthProvider } from './context/AuthProvider';
+import { OrderProvider } from './context/OrderProvider';
 import Login from './pages/Login';
-//import Orders from './pages/Orders';
+import Orders from './pages/Orders';
 import Tracking from './pages/Tracking';
-import './app.css';
-
-// import { Button } from 'reactstrap';
+import './App.css';
 
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
 // function Auth({ children }) {
@@ -19,13 +18,26 @@ import './app.css';
 //   );
 // }
 
+function combineProviders(providers) {
+  return providers.reduce((Combined, Provider) => ({ children }) => {
+    <Combined>
+      <Provider>{children}</Provider>                  
+    </Combined>  
+  });
+}
+
 function App() {
+  const Providers = combineProviders([
+    //AuthProvider,
+    OrderProvider
+  ]);
+
   return (
-    //<AuthProvider>
+    <Providers>
       <div className="app">
         <Routes>
           <Route path='/login' element={<Login />} />
-          {/* <Route path='/orders' element={
+          <Route path='/orders' element={
             //<Auth>
               <Orders />
             //</Auth>
@@ -34,12 +46,10 @@ function App() {
             //<Auth>
               <Tracking />
             //</Auth>
-          } /> */}
-          <Route path='/tracking' element={<Tracking/>}/>
+          } />
         </Routes>
       </div>
-    //</AuthProvider>
+    </Providers>
   );
 }
-
 export default App;

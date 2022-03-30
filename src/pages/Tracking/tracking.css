@@ -1,1 +1,76 @@
+*{
+    font-family: Sul Sans Regular;
+}
+
+body{
+    background-color: #ffffff;
+}
+
+.cliente{
+    /* background-color: #DA5D69 ; */
+    /* background-color: #A6A29F; */
+    border-radius: 0 0 30px 30px;
+    background-color: #a6a29f44;
+
+}
+
+.cliente-pedido{
+    font-size: 18px;
+    color: black;
+    padding-top: 20px;
+}
+
+p{
+    text-align: center;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.container-map{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px ;
+}
+
+.leaflet-container {
+    height: 40vh; 
+    width: 70%;
+  }
+
+.alinhar-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.btn { 
+    background-color: #EA1D2C ;
+    color: #ffffff;
+    width: 120px;
+}
+
+.btn-verde{
+    background-color: green;
+}
+
+.btn:hover{
+    background-color: #DA5D69 ;
+    color: #ffffff;
+}
+
+.btn-verde:hover{
+    background-color: rgba(6, 219, 6, 0.884);
+}
+
+a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #ffffff;
+}
 
