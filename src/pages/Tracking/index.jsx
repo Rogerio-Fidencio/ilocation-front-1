@@ -88,10 +88,8 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
-
-        <button type="submit" className="btn-tracking btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
-        <button type="submit" className="btn-tracking btn-primary " onClick={() => handleChange()}><a href="./pedidos.html">Cancelar</a></button>
-
+        <button type="submit" className="btn btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
+        <button type="submit" className="btn btn-primary " >Cancelar</button>
       </div>
     </>
   )
