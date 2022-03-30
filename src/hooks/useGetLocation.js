@@ -9,6 +9,7 @@ export default function useGetLocation() {
     useEffect(() => {
 
         function onSuccess(position) {
+            console.log("mudeiiiiii")
             setCoords([position.coords.latitude, position.coords.longitude, position.timestamp])
             // setTimeStamp(coords.timestamp)
         }

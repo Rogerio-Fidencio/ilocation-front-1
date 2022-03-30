@@ -17,18 +17,13 @@ export default function Tracking() {
 
   
   function handleChange(){
-
-    handleGeolocation()
-    // while(change){
-    // }
-      setChange(!change)
-      // navigate('/orders', { replace: true });
+    handleGeolocation();
   }
 
-  const handleGeolocation = async(event) => {
+  async function handleGeolocation() {
 
     //** validação básica de usuário **
-
+    console.log("aodishdis")
 
     const userCoords = {
       timestamp: coords[2],
@@ -43,7 +38,7 @@ export default function Tracking() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2dlcmlvQGVtYWlsLmNvbSIsImlzcyI6IkFkbWluIiwiZXhwIjoxNjQ4NjAxNzcyLCJ1c2VyIjoie1wiaWRcIjoxMyxcIm5hbWVcIjpcIlJvZ2VyaW9cIixcInBob25lXCI6XCI5OTg4NjY1NTQ0M1wifSJ9.B5zJ44RBEqV3l7fYlQCUH6UMEThDGJoAckYkI2Cz4eE"
+          'Authorization': 'Bearer ' + 'eyJ0eXAiiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIZW5yaXF1ZUBFbWFpbC5jb20iLCJpc3MiOiJBZG1pbiIsImV4cCI6MTY0ODYzMzI3NiwidXNlciI6IntcImlkXCI6MTEsXCJuYW1lXCI6XCJIZW5yaXF1ZVwiLFwicGhvbmVcIjpcIjY1NDM4NzY5MDc2XCJ9In0.xA3BuBkF7_zyRFS1zcZv64k7EKtDkCCwJs-OM8REeLU'
         },
         body: JSON.stringify(userCoords)
       })
@@ -66,7 +61,10 @@ export default function Tracking() {
     } catch (error) {
       //**tratativa de erro no back
       //navigate('/server_internal_error', { replace: true });
+      console.log(error.message)
     }
+
+    setTimeout(() => handleGeolocation(), 2000)
   }
 
   return (
