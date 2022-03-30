@@ -87,6 +87,7 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
+
         <button type="submit" className="btn btn-primary btn-verde ">Concluir</button>
         <button type="submit" className="btn btn-primary " onClick={(event) => handleChange()}>Cancelar</button>
       </div>

@@ -5,7 +5,12 @@ import { OrderProvider } from './context/OrderProvider';
 import Login from './pages/Login';
 import Orders from './pages/Orders';
 import Tracking from './pages/Tracking';
+
 import './App.css';
+
+import ServerError from './pages/ServerError';
+
+
 
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
 // function Auth({ children }) {
@@ -47,6 +52,7 @@ function App() {
               <Tracking />
             //</Auth>
           } />
+          <Route path='/server_internal_error' element={<ServerError />} />
         </Routes>
       </div>
     </Providers>
