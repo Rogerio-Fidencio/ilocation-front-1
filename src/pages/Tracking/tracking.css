@@ -7,8 +7,6 @@ body{
 }
 
 .cliente{
-    /* background-color: #DA5D69 ; */
-    /* background-color: #A6A29F; */
     border-radius: 0 0 30px 30px;
     background-color: #a6a29f44;
 
@@ -64,13 +62,3 @@ p{
 .btn-verde:hover{
     background-color: rgba(6, 219, 6, 0.884);
 }
-
-a{
-    color: #ffffff;
-    text-decoration: none;
-}
-
-a:hover{
-    color: #ffffff;
-}
-

@@ -5,7 +5,6 @@ import "./tracking.css"
 import useGetLocation from '../../hooks/useGetLocation'
 import { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
-import useAuth from '../../hooks/useAuth';
 
 export default function Tracking() {
   const [ change, setChange ] = useState(true);
@@ -28,7 +27,6 @@ export default function Tracking() {
   const handleGeolocation = async(event) => {
 
     //** validação básica de usuário **
-
 
     const userCoords = {
       timestamp: coords[2],
@@ -55,14 +53,6 @@ export default function Tracking() {
 
       console.log(response)
 
-      //**tratamento do response **
-
-      // setAuthData({
-        // token: response.token,
-        // idUser: response.id,
-      // });
-
-      // navigate('/orders', { replace: true });
     } catch (error) {
       //**tratativa de erro no back
       //navigate('/server_internal_error', { replace: true });
@@ -71,18 +61,10 @@ export default function Tracking() {
 
   return (
     <>
-      {/* <div className="container"> */}
       <Header title='Pedidos' />
         <div className="row cliente">
           <p className="cliente-pedido">Cliente: Ze endereco: Rua 1, vila 1, cidade um</p>
         </div>
-      {/* </div> */}
-
-      {/* <h3>
-        Latitude: {coords[0]} <br />
-        Longitude: {coords[1]} <br />
-        TimeStamp: {coords[2]}
-      </h3> */}
 
       <div className="container container-map">
         <MapContainer center={{
@@ -105,9 +87,7 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
-        {/* <button type="submit" className="btn btn-primary btn-verde " onClick={handleChange()}>Concluir</button>
-        <button type="submit" className="btn btn-primary " onClick={handleChange()}>Cancelar</button> */}
-        <button type="submit" className="btn btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
+        <button type="submit" className="btn btn-primary btn-verde ">Concluir</button>
         <button type="submit" className="btn btn-primary " onClick={(event) => handleChange()}>Cancelar</button>
       </div>
     </>
