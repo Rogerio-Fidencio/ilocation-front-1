@@ -14,16 +14,23 @@ body{
 
 }
 
+.cliente-pedido, .titulo-pedido{
+    text-align: center;
+    font-size: 30px;
+    color: #ffffff;
+}
+
 .cliente-pedido{
     font-size: 18px;
     color: black;
     padding-top: 20px;
 }
 
-p{
-    text-align: center;
-    font-size: 30px;
-    color: #ffffff;
+.alinhar-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
 }
 
 .container-map{
@@ -46,7 +53,7 @@ p{
     gap: 30px;
 }
 
-.btn { 
+.btn-tracking { 
     background-color: #EA1D2C ;
     color: #ffffff;
     width: 120px;
@@ -56,7 +63,7 @@ p{
     background-color: green;
 }
 
-.btn:hover{
+.btn-tracking:hover{
     background-color: #DA5D69 ;
     color: #ffffff;
 }

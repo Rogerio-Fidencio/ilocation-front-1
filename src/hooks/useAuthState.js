@@ -14,10 +14,6 @@ function useAuthState() {
     }
   }, [ authData ]);
 
-  const getToken = () => {
-    return getValue('token');
-  };
-
   //função que retorna o que está armazenado se não estiver vazio
   const getValue = (key) => {
     if (authData != null) return authData[key];
@@ -31,6 +27,10 @@ function useAuthState() {
     }
 
     return null;
+  };
+
+  const getToken = () => {
+    return getValue('token');
   };
 
   const logout = () => {
