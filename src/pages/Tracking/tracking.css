@@ -6,16 +6,12 @@ body{
     background-color: #ffffff;
 }
 
-.header-titulo{
-    background-color: #EA1D2C;
-    height: 100px;
-    display: flex;
-    align-items: center;
-}
-
 .cliente{
     /* background-color: #DA5D69 ; */
-    background-color: #A6A29F;
+    /* background-color: #A6A29F; */
+    border-radius: 0 0 30px 30px;
+    background-color: #a6a29f44;
+
 }
 
 .cliente-pedido, .titulo-pedido{
@@ -37,7 +33,6 @@ body{
     min-height: 50vh;
 }
 
-
 .container-map{
     display: flex;
     align-items: center;
@@ -45,6 +40,7 @@ body{
     margin-top: 100px;
     margin-bottom: 100px ;
 }
+
 .leaflet-container {
     height: 40vh; 
     width: 70%;
@@ -52,8 +48,9 @@ body{
 
 .alinhar-btn{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 30px;
 }
 
 .btn-tracking { 
@@ -74,11 +71,6 @@ body{
 .btn-verde:hover{
     background-color: rgba(6, 219, 6, 0.884);
 }
-
-#mapid {
-     height: 330px; 
-     width: 70%;
-    }
 
 a{
     color: #ffffff;
