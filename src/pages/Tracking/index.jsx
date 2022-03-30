@@ -5,59 +5,61 @@ import "./tracking.css"
 import useGetLocation from '../../hooks/useGetLocation'
 import { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
+import useAuth from '../../hooks/useAuth';
 
 export default function Tracking() {
   const [ change, setChange ] = useState(true);
   const { coords } = useGetLocation();
+  const[ lastCoords, setLastCoords ] = useState({
+    timestamp: 1,
+    longitude: 1,
+    latitude: 1
+  });
+  let timeOut = null;
+
 
   if (!coords) {
     return <h1>Obtendo localização ...</h1>
   }
 
-  
-  function handleChange(){
+  handleGeolocation();
 
-    handleGeolocation()
-    // while(change){
-    // }
-      setChange(!change)
-      // navigate('/orders', { replace: true });
-  }
-
-  const handleGeolocation = async(event) => {
-
-    //** validação básica de usuário **
-
-    const userCoords = {
+  async function handleGeolocation() {
+    console.log("oii")
+    console.log(coords)
+    const  userCoords = {
       timestamp: coords[2],
       longitude: coords[1],
       latitude: coords[0]
-    }; //para mandar pro back
-
+    }; 
+    if(userCoords.latitude === lastCoords.latitude && userCoords.longitude === lastCoords.longitude){
+      console.log("mesma coisa carai")
+      
+      return
+    }
+    setLastCoords(userCoords);
+    console.log(coords)
     console.log(userCoords)
+
 
     try {
       const request = await fetch('http://localhost:8080/api/v1/geolocation', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2dlcmlvQGVtYWlsLmNvbSIsImlzcyI6IkFkbWluIiwiZXhwIjoxNjQ4NjAxNzcyLCJ1c2VyIjoie1wiaWRcIjoxMyxcIm5hbWVcIjpcIlJvZ2VyaW9cIixcInBob25lXCI6XCI5OTg4NjY1NTQ0M1wifSJ9.B5zJ44RBEqV3l7fYlQCUH6UMEThDGJoAckYkI2Cz4eE"
+          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIZW5yaXF1ZUBFbWFpbC5jb20iLCJpc3MiOiJBZG1pbiIsImV4cCI6MTY0ODY3MzgwMCwidXNlciI6IntcImlkXCI6MTEsXCJuYW1lXCI6XCJIZW5yaXF1ZVwiLFwicGhvbmVcIjpcIjY1NDM4NzY5MDc2XCJ9In0.BenqdUFzPS2LXBYi-1CmqXrZXukMtwi4AgEn0FDKAH8"
         },
         body: JSON.stringify(userCoords)
       })
-        .then((response) => response.json())
-        .then((userCoords) => {
-          console.log("Success:", userCoords);
-        })
-      const response = await request.json();
-
-      console.log(response)
+      console.log(await request.status);
 
     } catch (error) {
-      //**tratativa de erro no back
-      //navigate('/server_internal_error', { replace: true });
+      console.log(error.message)
     }
   }
+
+
+
 
   return (
     <>
@@ -72,7 +74,6 @@ export default function Tracking() {
           lng: coords[1]
         }}
           zoom={13} 
-          // whenCreated={() => { }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -87,9 +88,8 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
-
-        <button type="submit" className="btn btn-primary btn-verde ">Concluir</button>
-        <button type="submit" className="btn btn-primary " onClick={(event) => handleChange()}>Cancelar</button>
+        <button type="submit" className="btn btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
+        <button type="submit" className="btn btn-primary " >Cancelar</button>
       </div>
     </>
   )

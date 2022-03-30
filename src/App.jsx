@@ -11,7 +11,6 @@ import './App.css';
 import ServerError from './pages/ServerError';
 
 
-
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
 // function Auth({ children }) {
 //   const { getToken } = useAuth();
