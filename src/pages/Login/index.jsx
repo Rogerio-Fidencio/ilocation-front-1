@@ -1,21 +1,27 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import useAuth from '../../hooks/useAuth';
-import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet'
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
 import pinIcon from '../../assets/ilocation-logo.svg';
+import closedEyeIcon from '../../assets/hide.png';
+import openEyeIcon from '../../assets/view.png';
 import './login.css';
 
 function Login() {
   //const { setAuthData } = useAuth();
   const [ user, setUser ] = useState({ email: '', password: ''});
   const [ error, setError ] = useState({ email: '', password: '' });
+  const [ openEye, setOpenEye ] = useState(false);
   const navigate = useNavigate();
   
   //[inputs controlados] guardando o que o usuário digitar
   const handleChange = (prop) => event => {
     setUser({ ...user, [prop]: event.target.value });
   };
+
+  const handleShowPassword = () => {
+    openEye ? setOpenEye(false) : setOpenEye(true);
+  }
 
   const handleLogin = async(event) => {
     event.preventDefault();
@@ -45,30 +51,28 @@ function Login() {
     }
 
     setError({ email: '', password: '' });
-    
-    // const userData = { ...user }; //para mandar pro back
 
-    // try {
-    //   const request = await fetch('https://ilocation.herokuapp.com/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(user)
-    //   });
+    try {
+      // const request = await fetch('https://ilocation.herokuapp.com/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(user)
+      // });
 
-    //   const response = await request.json();
+      // const response = await request.json();
 
-    //   //**tratamento do response **
+      //**tratamento do response **
 
-    //   setAuthData({
-    //     token: response.token,
-    //   });
+      // setAuthData({
+      //   token: 'token' //response.token
+      // });
 
-    navigate('/orders', { replace: true });
-    // } catch (error) {
-    //   //navigate('/server_internal_error', { replace: true });
-    // }
+      navigate('/orders', { replace: true });
+    } catch (error) {
+      navigate('/server_internal_error', { replace: true });
+    }
   };
 
   return (
@@ -89,7 +93,7 @@ function Login() {
             className='form-input' 
             type='email'
             onChange={handleChange('email')} 
-            invalid={error.email} 
+            invalid={error.email ? true : false} 
           />
           <FormFeedback>
             {error.email && '*Campo obrigatório'}
@@ -102,21 +106,15 @@ function Login() {
         <FormGroup className='form-group'>
           <Input
             className='form-input' 
-            type='password'
+            type={openEye ? 'text' : 'password' }
             onChange={handleChange('password')} 
-            invalid={error.password} 
+            invalid={error.password ? true : false} 
           />
+          <img src={openEye ? openEyeIcon : closedEyeIcon} alt="closed eye icon" className="eye-icon" onClick={handleShowPassword} />
           <FormFeedback>
           {error.password && '*Campo obrigatório'}
           </FormFeedback>
         </FormGroup>
-
-          {/* <FormGroup className="position-relative">
-            <FormFeedback tooltip valid>
-              Mensagem positiva em estilo diferente!
-            </FormFeedback>
-            <FormText>exemplo: usuario@usuario.com</FormText>
-          </FormGroup> */}
 
         <Button className='form-btn' onClick={handleLogin} outline>
           Entrar

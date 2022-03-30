@@ -13,10 +13,12 @@
   flex-grow: 1;
   font-size: 3rem;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #9C050B;
   background-color: #9C050B;
-  background-image: url('../../assets/Delivery-Ifood.jpeg');
+  background-image: url('../../assets/entregador-ifood.jpeg');
   background-repeat: no-repeat;
+  background-size: cover;
+  background-position:top;
 }
 
 .logo-icon {
@@ -39,17 +41,13 @@
   justify-content: flex-start;
 }
 
-/* colocar so nas telas pequenas */
-.container-label.first {
-  padding-top: 5rem;
-}
-
 .form-label {
   color: #3F3E3E;
 }
 
 .form-group {
   width: 90%;
+  position: relative;
 }
 
 .form-input {
@@ -57,20 +55,48 @@
   margin-bottom: .3rem;
 }
 
+.eye-icon {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  background-color: #FFFFFF;
+}
+
 .form-input:focus {
   border: 1px solid #A6A29F;
   box-shadow: 0 0px 0px #A6A29F;
 }
+.form-btn, .form-btn:hover, .form-btn:focus {
+  border-color: #EA1D2C;
+}
 
 .form-btn {
   width: 90%;
-  /* padding: .375rem 1.5rem; */
   margin-top: 1.5rem;
-  color: #9C050B;
-  border-color: #9C050B;
+  color: #EA1D2C;
+  background-color: #FFFFFF;
   transition: all ease-in .3s;
 }
 
 .form-btn:hover {
-  background-color: #9C050B;
+  background-color: #EA1D2C;
+}
+
+.form-btn:focus {
+  box-shadow: 0 0 0 .25rem #ea1d2b56;
+
+}
+
+@media(max-width: 768px) {
+  .login-container {
+    min-height: 100vh;
+    display: block;
+    flex-basis: auto;
+  }
+  .container-label.first {
+    padding-top: 5rem;
+  }
 }
