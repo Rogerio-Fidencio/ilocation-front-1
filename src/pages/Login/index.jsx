@@ -2,19 +2,26 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import useAuth from '../../hooks/useAuth';
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
-//import pinIcon from '../../assets/ilocation-logo.svg';
+import pinIcon from '../../assets/ilocation-logo.svg';
+import closedEyeIcon from '../../assets/hide.png';
+import openEyeIcon from '../../assets/view.png';
 import './login.css';
 
 function Login() {
   //const { setAuthData } = useAuth();
   const [ user, setUser ] = useState({ email: '', password: ''});
   const [ error, setError ] = useState({ email: '', password: '' });
+  const [ openEye, setOpenEye ] = useState(false);
   const navigate = useNavigate();
   
   //[inputs controlados] guardando o que o usuário digitar
   const handleChange = (prop) => event => {
     setUser({ ...user, [prop]: event.target.value });
   };
+
+  const handleShowPassword = () => {
+    openEye ? setOpenEye(false) : setOpenEye(true);
+  }
 
   const handleLogin = async(event) => {
     event.preventDefault();
@@ -32,47 +39,59 @@ function Login() {
       return;
     }
 
-    setError({ password: '', email: '' });
-    
-    // const userData = {}; //para mandar pro back
+    const input = user.email.replace(' ', '');
 
-    // try {
-    //   const request = await fetch('endpoint de login', {
-    //     method: 'metodo do endpoint',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(userData)
-    //   });
+    if (Number(input)) {
+      if (input.length !== 11) {
+        setError({ email: '*Formato inválido', password: '' });
+        return;
+      }
 
-    //   const response = await request.json();
+      setUser({ ...user, email: input });
+    }
 
-    //   //**tratamento do response **
+    setError({ email: '', password: '' });
 
-    //   setAuthData({
-    //     token: response.token,
-    //     idUser: response.id,
-    //   });
+    try {
+      // const request = await fetch('https://ilocation.herokuapp.com/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(user)
+      // });
 
-    navigate('/orders', { replace: true });
-    // } catch (error) {
-    //   //navigate('/server_internal_error', { replace: true });
-    // }
+      // const response = await request.json();
+
+      //**tratamento do response **
+
+      // setAuthData({
+      //   token: 'token' //response.token
+      // });
+
+      navigate('/orders', { replace: true });
+    } catch (error) {
+      navigate('/server_internal_error', { replace: true });
+    }
   };
 
   return (
-    <>
-      {/* <header>
+    <div className='login-container'>
+      <header className='ilocation-logo'>
         iLocati
-        <img className="pin-icon" src={pinIcon} alt="pin map icon" />
+        <img className="logo-icon" src={pinIcon} alt="pin map icon" />
         n
-      </header> */}
+      </header>
       <Form className='form'>
+        <div className='container-label first'>
+          <Label className='form-label' for="email">
+            Email ou telefone
+          </Label>
+        </div>
         <FormGroup className='form-group'>
-          <Label className='form-label' for="email">Email</Label>
           <Input 
             className='form-input' 
-            type='email' 
+            type='email'
             onChange={handleChange('email')} 
             invalid={error.email ? true : false} 
           />
@@ -80,31 +99,28 @@ function Login() {
             {error.email && '*Campo obrigatório'}
           </FormFeedback>
         </FormGroup>
-        <FormGroup className='form-group'>
+
+        <div className='container-label'>
           <Label className='form-label' for="password">Senha</Label>
+        </div>
+        <FormGroup className='form-group'>
           <Input
             className='form-input' 
-            type='password' 
+            type={openEye ? 'text' : 'password' }
             onChange={handleChange('password')} 
             invalid={error.password ? true : false} 
           />
+          <img src={openEye ? openEyeIcon : closedEyeIcon} alt="closed eye icon" className="eye-icon" onClick={handleShowPassword} />
           <FormFeedback>
           {error.password && '*Campo obrigatório'}
           </FormFeedback>
         </FormGroup>
 
-          {/* <FormGroup className="position-relative">
-            <FormFeedback tooltip valid>
-              Mensagem positiva em estilo diferente!
-            </FormFeedback>
-            <FormText>exemplo: usuario@usuario.com</FormText>
-          </FormGroup> */}
-
-        <Button className='form-btn' onClick={handleLogin} color='danger' outline>
+        <Button className='form-btn' onClick={handleLogin} outline>
           Entrar
         </Button>
       </Form>
-    </>
+    </div>
   );
 }
 

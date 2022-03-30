@@ -10,16 +10,20 @@
 .title-order {
   text-align: center;
   font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
   color: #FFFFFF;
 }
-
-.client{
+.header {
   border-radius: 0 0 30px 30px;
   background-color: #a6a29f44;
+}
+.client{
+  border-radius: 0 0 30px 30px;
 }
 
 .client-order{
   font-size: 18px;
   color: #A6A29F;
-  padding-top: 20px;
+  padding: 15px 0;
 }

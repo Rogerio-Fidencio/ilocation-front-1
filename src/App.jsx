@@ -5,6 +5,7 @@ import { OrderProvider } from './context/OrderProvider';
 import Login from './pages/Login';
 import Orders from './pages/Orders';
 import Tracking from './pages/Tracking';
+import ServerError from './pages/ServerError';
 import './app.css';
 
 //criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
@@ -47,6 +48,7 @@ function App() {
               <Tracking />
             //</Auth>
           } />
+          <Route path='/server_internal_error' element={<ServerError />} />
         </Routes>
       </div>
     </Providers>
