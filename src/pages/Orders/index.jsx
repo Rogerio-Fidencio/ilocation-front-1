@@ -43,7 +43,7 @@ function Orders() {
   const handleLoadList = async() => {
     try {
       console.log(getToken());
-      const request = await fetch('https://ilocationilab.herokuapp.com/api/v1/order/available', {
+      const request = await fetch('http://localhost:8080/api/v1/order/available', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function Orders() {
 
   const handleTrackingAssign = async() => {
     try {
-      const request = await fetch(`https://ilocationilab.herokuapp.com/api/v1/assign/${infoModal.id}`, {
+      const request = await fetch(`http://localhost:8080/api/v1/assign/${infoModal.id}`, {
         method: 'PATCH',
         headers: {
           'Content-type': 'application/json',

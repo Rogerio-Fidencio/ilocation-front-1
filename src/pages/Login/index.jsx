@@ -53,7 +53,7 @@ function Login() {
     setError({ email: '', password: '' });
 
     try {
-      const request = await fetch('https://ilocationilab.herokuapp.com/api/v1/login', {
+      const request = await fetch('http://localhost:8080/api/v1/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
