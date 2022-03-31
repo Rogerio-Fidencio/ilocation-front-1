@@ -1,13 +1,18 @@
-
-import 'leaflet/dist/leaflet.css';
-import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
-import "./tracking.css"
-import useGetLocation from '../../hooks/useGetLocation'
 import { useEffect, useState } from 'react';
+import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
+import useGetLocation from '../../hooks/useGetLocation'
 import Header from '../../Components/Header';
+//import useAuth from '../../hooks/useAuth';
+import 'leaflet/dist/leaflet.css';
+import './tracking.css';
 import useAuth from '../../hooks/useAuth';
+import useOrder from '../../hooks/useOrder';
+import { useNavigate } from 'react-router';
 
 export default function Tracking() {
+  const navigate = useNavigate();
+  const { getToken } = useAuth();
+  const { orderInfo } = useOrder();
   const [ change, setChange ] = useState(true);
   const { coords } = useGetLocation();
   const[ lastCoords, setLastCoords ] = useState({
@@ -25,47 +30,80 @@ export default function Tracking() {
   handleGeolocation();
 
   async function handleGeolocation() {
-    console.log("oii")
-    console.log(coords)
     const  userCoords = {
       timestamp: coords[2],
       longitude: coords[1],
       latitude: coords[0]
     }; 
     if(userCoords.latitude === lastCoords.latitude && userCoords.longitude === lastCoords.longitude){
-      console.log("mesma coisa carai")
-      
-      return
+      return;
     }
     setLastCoords(userCoords);
-    console.log(coords)
-    console.log(userCoords)
-
 
     try {
-      const request = await fetch('http://localhost:8080/api/v1/geolocation', {
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/geolocation', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIZW5yaXF1ZUBFbWFpbC5jb20iLCJpc3MiOiJBZG1pbiIsImV4cCI6MTY0ODY3MzgwMCwidXNlciI6IntcImlkXCI6MTEsXCJuYW1lXCI6XCJIZW5yaXF1ZVwiLFwicGhvbmVcIjpcIjY1NDM4NzY5MDc2XCJ9In0.BenqdUFzPS2LXBYi-1CmqXrZXukMtwi4AgEn0FDKAH8"
+          'Authorization': `${getToken()}`
         },
         body: JSON.stringify(userCoords)
-      })
-      console.log(await request.status);
+      });
+
+      //console.log(request);
 
     } catch (error) {
       console.log(error.message)
     }
+    console.log('Peguei geolocalização!');
   }
 
+  const handleConcludedOrder = async() => {
+    try {
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/order/status/delivered', {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `${getToken()}`
+        }
+      });
 
+      console.log(getToken());
+      console.log(request);
+      //setOrderInfo({});
+       //encerrar watch ID
+      //navigator.geolocation.clearWatch(watchID);
+      navigate('/pedidos', { replace: true });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
+  const handleCancelOrder = async() => {
+    try {
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/order/status/cancelled', {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `${getToken()}`
+        }
+      });
+
+      console.log(request);
+      //setOrderInfo({});
+      //encerrar watch ID
+      //navigator.geolocation.clearWatch(watchID);
+      navigate('/pedidos', { replace: true });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <>
       <Header title='Pedidos' />
         <div className="row cliente">
-          <p className="cliente-pedido">Cliente: Ze endereco: Rua 1, vila 1, cidade um</p>
+          <p className="cliente-pedido">{orderInfo.id}</p>
         </div>
 
       <div className="container container-map">
@@ -88,8 +126,8 @@ export default function Tracking() {
       </div>
 
       <div className="container alinhar-btn">
-        <button type="submit" className="btn btn-primary btn-verde "><a href="./pedidos.html">Concluir</a></button>
-        <button type="submit" className="btn btn-primary " >Cancelar</button>
+        <button type="button" className="btn btn-primary btn-verde " onClick={handleConcludedOrder}>Concluir</button>
+        <button type="button" className="btn btn-primary "onClick={handleCancelOrder} >Cancelar</button>
       </div>
     </>
   )

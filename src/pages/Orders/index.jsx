@@ -2,26 +2,28 @@ import ordersList from './list';
 import { useEffect, 
   useState } from 'react';
 import { useNavigate } from 'react-router';
-//import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import useOrder from '../../hooks/useOrder';
 import Header from '../../Components/Header';
 import { Table, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import pinIcon from '../../assets/maps-black.svg';
+//import pinIcon from '../../assets/maps-black.svg';
 import './orders.css';
 
 function orderItem(order, handleModal) {
-  const { id, endereco, distancia } = order;
+  const { id, customerCep, customerNumRes, customerCompl } = order;
 
   return (
     <tr key={id} id={String(id)} onClick={(event) => handleModal(event)}>
       <td id={String(id)}>
         Pedido nº{id}
         <div id={String(id)} className="order-info">
-          <span id={String(id)} className="info-address">{endereco}</span>
-          <span id={String(id)}>
+          <span id={String(id)} className="info-address">
+            {customerCep}, {customerNumRes} - {customerCompl}
+          </span>
+          {/* <span id={String(id)}>
             <img id={String(id)} className="pin-icon" src={pinIcon} alt="pin map icon" />
             {(distancia / 1000).toFixed(1)}km
-          </span>
+          </span> */}
         </div>
       </td>
     </tr>
@@ -29,34 +31,36 @@ function orderItem(order, handleModal) {
 }
 
 function Orders() {
-  //const { getToken } = useAuth();
+  const { getToken } = useAuth();
   const { setOrderInfo } = useOrder();
- //const [ ordersList, setOrdersList ] = useState([]);
+  const [ ordersList, setOrdersList ] = useState([]);
   const [ showModal, setShowModal ] = useState(false);
   const [ infoModal, setInfoModal ] = useState({ 
-    id: '', endereco: '', distancia: '' 
+    id: '', customerCep: '', customerNumRes: '', customerCompl: ''
   });
   const navigate = useNavigate();
 
-  // const handleLoadList = async() => {
-  //   try {
-  //     const request = await fetch('https://ilocation.herokuapp.com/api/v1/order', {
-  //       method: 'metodo do endpoint',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${getToken()}`
-  //       }
-  //     });
+  const handleLoadList = async() => {
+    try {
+      console.log(getToken());
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/order/available', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${getToken()}`
+        }
+      });
 
-  //     const response = await request.json();
+      const response = await request.json();
 
-  //     //**tratamento do response **
+      console.log(response);
 
-  //     //setOrdersList(response);
-  //   } catch (error) {
-  //     navigate('/server_internal_error', { replace: true });
-  //   }
-  // };
+      setOrdersList(response);
+    } catch (error) {
+      console.log(error.message);
+      //navigate('/server_internal_error', { replace: true });
+    }
+  };
 
   const handleModal = (event) => {
     console.log(event.target.id);
@@ -68,32 +72,29 @@ function Orders() {
 
   const handleTrackingAssign = async() => {
     try {
-      const request = await fetch(`https://ilocation.herokuapp.com/api/v1/assign/${infoModal.id}`, {
+      const request = await fetch(`https://ilocation.herokuapp.com/api/v1/order/assign/${infoModal.id}`, {
         method: 'PATCH',
         headers: {
           'Content-type': 'application/json',
-          //Authorization: `Bearer ${getToken()}`
+          'Authorization': `${getToken()}`
         }
       });
-
-      const response = await request.json();
-
-      //**tratamento do response **
 
       setOrderInfo({
         id: infoModal.id, 
         endereco: infoModal.endereco, 
         distancia: infoModal.distancia
       });
-      navigate('/tracking', { replace: true });
+      navigate('/rastreio', { replace: true });
     } catch (error) {
-      navigate('/server_internal_error', { replace: true });
+      console.log(error.message);
+      //navigate('/server_internal_error', { replace: true });
     }
   }
 
-  // useEffect(() => {
-  //   handleLoadList();
-  // }, []);
+  useEffect(() => {
+    handleLoadList();
+  }, []);
 
   return (
     <>
@@ -111,12 +112,14 @@ function Orders() {
             Pedido nº {infoModal.id}
         </ModalHeader>
         <ModalBody>
-          <p className='modal-p'>{infoModal.endereco}</p>
+          <p className='modal-p'>
+            {infoModal.customerCep}, {infoModal.customerNumRes} - {infoModal.customerCompl}
+          </p>
           <br />
-          <span className='modal-span'>
+          {/* <span className='modal-span'>
             <img className='pin-icon' src={pinIcon} alt='pin map icon' />
             {(infoModal.distancia / 1000).toFixed(1)}km
-          </span>
+          </span> */}
         </ModalBody>
         <ModalFooter>
           <Button className='modal-btn tracking' 

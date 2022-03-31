@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
+import useOrder from '../../hooks/useOrder';
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
 import pinIcon from '../../assets/ilocation-logo.svg';
 import closedEyeIcon from '../../assets/hide.png';
@@ -8,8 +9,9 @@ import openEyeIcon from '../../assets/view.png';
 import './login.css';
 
 function Login() {
-  //const { setAuthData } = useAuth();
-  const [ user, setUser ] = useState({ email: '', password: ''});
+  const { setAuthData } = useAuth();
+  const { setOrderInfo } = useOrder();
+  const [ user, setUser ] = useState({ emailOrPhone: '', password: ''});
   const [ error, setError ] = useState({ email: '', password: '' });
   const [ openEye, setOpenEye ] = useState(false);
   const navigate = useNavigate();
@@ -26,20 +28,20 @@ function Login() {
   const handleLogin = async(event) => {
     event.preventDefault();
 
-    if (!user.email || !user.password) {
-      if (!user.email) {
+    if (!user.emailOrPhone || !user.password) {
+      if (!user.emailOrPhone) {
         setError({ email: '*Campo obrigatório', password: '' });
       }
       if (!user.password) {
         setError({ email: '', password: '*Campo obrigatório' });
       }
-      if (!user.email && !user.password) {
+      if (!user.emailOrPhone && !user.password) {
         setError({ email: '*Campo obrigatório', password: '*Campo obrigatório' });
       }
       return;
     }
 
-    const input = user.email.replace(' ', '');
+    const input = user.emailOrPhone.replace(' ', '');
 
     if (Number(input)) {
       if (input.length !== 11) {
@@ -47,31 +49,48 @@ function Login() {
         return;
       }
 
-      setUser({ ...user, email: input });
+      setUser({ ...user, emailOrPhone: input });
     }
 
     setError({ email: '', password: '' });
 
     try {
-      // const request = await fetch('https://ilocation.herokuapp.com/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(user)
-      // });
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
 
-      // const response = await request.json();
+      const response = await request.json();
 
-      //**tratamento do response **
+      if (response.status > 204) return;
 
-      // setAuthData({
-      //   token: 'token' //response.token
-      // });
+      setAuthData({
+        token: response.access_token
+      });
 
-      navigate('/orders', { replace: true });
+      const requestOrder = await fetch('https://ilocation.herokuapp.com/api/v1/deliveryperson/currentorder', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: response.access_token
+        }
+      });
+
+      const order = await requestOrder.json()
+
+      if (order.status > 204) {
+        navigate('/pedidos', { replace: true });
+        return;
+      }
+
+      setOrderInfo(order);
+      navigate('/rastreio', { replace: true });
     } catch (error) {
-      navigate('/server_internal_error', { replace: true });
+      console.log(error.message);
+      // navigate('/server_internal_error', { replace: true });
     }
   };
 
@@ -92,7 +111,7 @@ function Login() {
           <Input 
             className='form-input' 
             type='email'
-            onChange={handleChange('email')} 
+            onChange={handleChange('emailOrPhone')} 
             invalid={error.email ? true : false} 
           />
           <FormFeedback>

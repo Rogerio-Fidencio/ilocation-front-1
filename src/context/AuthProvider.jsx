@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider value={auth}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 //contexto Auth em si
