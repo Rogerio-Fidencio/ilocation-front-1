@@ -55,7 +55,7 @@ function Login() {
     setError({ email: '', password: '' });
 
     try {
-      const request = await fetch('https://ilocation.herokuapp.com/api/v1/login', {
+      const requestLogin = await fetch('https://ilocation.herokuapp.com/api/v1/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ function Login() {
         body: JSON.stringify(user)
       });
 
-      const response = await request.json();
+      const response = await requestLogin.json();
 
       if (response.status > 204) return;
 
