@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import useOrder from '../../hooks/useOrder';
 import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
 import pinIcon from '../../assets/ilocation-logo.svg';
 import closedEyeIcon from '../../assets/hide.png';
@@ -9,6 +10,7 @@ import './login.css';
 
 function Login() {
   const { setAuthData } = useAuth();
+  const { setOrderInfo } = useOrder();
   const [ user, setUser ] = useState({ emailOrPhone: '', password: ''});
   const [ error, setError ] = useState({ email: '', password: '' });
   const [ openEye, setOpenEye ] = useState(false);
@@ -53,7 +55,7 @@ function Login() {
     setError({ email: '', password: '' });
 
     try {
-      const request = await fetch('http://localhost:8080/api/v1/login', {
+      const request = await fetch('https://ilocation.herokuapp.com/api/v1/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,13 +65,29 @@ function Login() {
 
       const response = await request.json();
 
+      if (response.status > 204) return;
+
       setAuthData({
         token: response.access_token
       });
 
-      console.log(response.access_token);
+      const requestOrder = await fetch('https://ilocation.herokuapp.com/api/v1/deliveryperson/currentorder', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: response.access_token
+        }
+      });
 
-      navigate('/pedidos', { replace: true });
+      const order = await requestOrder.json()
+
+      if (order.status > 204) {
+        navigate('/pedidos', { replace: true });
+        return;
+      }
+
+      setOrderInfo(order);
+      navigate('/rastreio', { replace: true });
     } catch (error) {
       console.log(error.message);
       // navigate('/server_internal_error', { replace: true });
