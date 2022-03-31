@@ -1,11 +1,10 @@
-
-import 'leaflet/dist/leaflet.css';
-import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
-import "./tracking.css"
-import useGetLocation from '../../hooks/useGetLocation'
 import { useEffect, useState } from 'react';
+import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
+import useGetLocation from '../../hooks/useGetLocation'
 import Header from '../../Components/Header';
-import useAuth from '../../hooks/useAuth';
+//import useAuth from '../../hooks/useAuth';
+import 'leaflet/dist/leaflet.css';
+import './tracking.css';
 
 export default function Tracking() {
   const [ change, setChange ] = useState(true);
@@ -34,13 +33,12 @@ export default function Tracking() {
     }; 
     if(userCoords.latitude === lastCoords.latitude && userCoords.longitude === lastCoords.longitude){
       console.log("mesma coisa carai")
-      
+    
       return
     }
     setLastCoords(userCoords);
     console.log(coords)
     console.log(userCoords)
-
 
     try {
       const request = await fetch('http://localhost:8080/api/v1/geolocation', {
@@ -57,9 +55,6 @@ export default function Tracking() {
       console.log(error.message)
     }
   }
-
-
-
 
   return (
     <>
