@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Orders from './pages/Orders';
 import Tracking from './pages/Tracking';
 //import ServerError from './pages/ServerError';
-import './app.css';
+import '../src/app.css';
 
 function App() {
   return (
