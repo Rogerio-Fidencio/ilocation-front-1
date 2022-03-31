@@ -89,7 +89,7 @@ function Login() {
       setOrderInfo(order);
       navigate('/rastreio', { replace: true });
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       // navigate('/server_internal_error', { replace: true });
     }
   };
