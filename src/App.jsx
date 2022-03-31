@@ -1,5 +1,4 @@
-import { Navigate, Routes, Route, useLocation } from 'react-router';
-//import useAuth from './hooks/useAuth';
+import { Routes, Route } from 'react-router';
 import { AuthProvider } from './context/AuthProvider';
 import { OrderProvider } from './context/OrderProvider';
 import Login from './pages/Login';
@@ -7,17 +6,6 @@ import Orders from './pages/Orders';
 import Tracking from './pages/Tracking';
 //import ServerError from './pages/ServerError';
 import './app.css';
-
-//criação de componente para verificar a autenticação, se nåo tiver, o usuário é redirecionado para a tela de login
-// function Auth({ children }) {
-//   const { getToken } = useAuth();
-//   const { pathname } = useLocation();
-
-//   return (
-//     getToken() ? children  
-//     : <Navigate to='/login' replace state={{ path: pathname }} />
-//   );
-// }
 
 function App() {
   return (
