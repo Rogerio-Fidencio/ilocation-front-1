@@ -5,6 +5,7 @@ import useOrder from '../../hooks/useOrder';
 import useGetLocation from '../../hooks/useGetLocation';
 import Header from '../../Components/Header';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
+import { Button, Spinner } from 'reactstrap';
 import 'leaflet/dist/leaflet.css';
 import './tracking.css';
 
@@ -20,7 +21,7 @@ export default function Tracking() {
   const navigate = useNavigate();
 
   if (!coords) {
-    return <h1>Obtendo localização ...</h1>
+    return <Spinner color="danger">Loading...</Spinner>
   }
 
   handleGeolocation();
@@ -67,11 +68,6 @@ export default function Tracking() {
         }
       });
 
-      console.log(getToken());
-      console.log(request);
-      //setOrderInfo({});
-       //encerrar watch ID
-      //navigator.geolocation.clearWatch(watchID);
       navigate('/pedidos', { replace: true });
     } catch (error) {
       console.log(error.message);
@@ -88,10 +84,6 @@ export default function Tracking() {
         }
       });
 
-      console.log(request);
-      //setOrderInfo({});
-      //encerrar watch ID
-      //navigator.geolocation.clearWatch(watchID);
       navigate('/pedidos', { replace: true });
     } catch (error) {
       console.log(error.message);
@@ -100,33 +92,23 @@ export default function Tracking() {
 
   return (
     <>
-      <Header title='Pedidos' />
-        <div className="row cliente">
-          <p className="cliente-pedido">{orderInfo.id}</p>
-        </div>
+      <Header order={orderInfo} />
 
       <div className="container container-map">
-        <MapContainer center={{
-          lat: coords[0],
-          lng: coords[1]
-        }}
-          zoom={13} 
-        >
+        <MapContainer center={{ lat: coords[0], lng: coords[1] }}zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={[coords[0], coords[1]]} >
-            <Popup>
-              Entregador
-            </Popup>
+            <Popup>Entregador</Popup>
           </Marker>
         </MapContainer>
       </div>
 
-      <div className="container alinhar-btn">
-        <button type="button" className="btn btn-primary btn-verde " onClick={handleConcludedOrder}>Concluir</button>
-        <button type="button" className="btn btn-primary "onClick={handleCancelOrder} >Cancelar</button>
+      <div className="container align-btn">
+        <Button className='btn-confirm' onClick={handleConcludedOrder}>Concluir</Button>
+        <Button className='btn-cancel' onClick={handleCancelOrder}>Cancelar</Button>
       </div>
     </>
   )

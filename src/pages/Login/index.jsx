@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useOrder from '../../hooks/useOrder';
-import { Form, FormGroup, FormFeedback, Label, Input, Button } from 'reactstrap';
+import { Form, FormGroup, FormFeedback, Label, Input, Button, Spinner } from 'reactstrap';
 import pinIcon from '../../assets/ilocation-logo.svg';
 import closedEyeIcon from '../../assets/hide.png';
 import openEyeIcon from '../../assets/view.png';
@@ -14,6 +14,7 @@ function Login() {
   const [ user, setUser ] = useState({ emailOrPhone: '', password: ''});
   const [ error, setError ] = useState({ email: '', password: '' });
   const [ openEye, setOpenEye ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   const navigate = useNavigate();
   
   const handleChange = (prop) => event => {
@@ -26,7 +27,8 @@ function Login() {
 
   const handleLogin = async(event) => {
     event.preventDefault();
-
+    setLoading(true);
+    
     if (!user.emailOrPhone || !user.password) {
       if (!user.emailOrPhone) {
         setError({ email: '*Campo obrigatório', password: '' });
@@ -37,6 +39,7 @@ function Login() {
       if (!user.emailOrPhone && !user.password) {
         setError({ email: '*Campo obrigatório', password: '*Campo obrigatório' });
       }
+      setLoading(false);
       return;
     }
 
@@ -45,6 +48,7 @@ function Login() {
     if (Number(input)) {
       if (input.length !== 11) {
         setError({ email: '*Formato inválido', password: '' });
+        setLoading(false);
         return;
       }
 
@@ -64,7 +68,10 @@ function Login() {
 
       const response = await requestLogin.json();
 
-      if (response.status > 204) return;
+      if (response.status > 204) {
+        setLoading(false);
+        return;
+      }
 
       setAuthData({
         token: response.access_token
@@ -81,11 +88,13 @@ function Login() {
       const order = await requestOrder.json()
 
       if (order.status > 204) {
+        setLoading(false);
         navigate('/pedidos', { replace: true });
         return;
       }
 
       setOrderInfo(order);
+      setLoading(false);
       navigate('/rastreio', { replace: true });
     } catch (error) {
       //console.log(error.message);
@@ -135,7 +144,7 @@ function Login() {
         </FormGroup>
 
         <Button className='form-btn' onClick={handleLogin} outline>
-          Entrar
+          {loading ? <Spinner color='light'>Loading...</Spinner> : 'Entrar'}
         </Button>
       </Form>
     </div>

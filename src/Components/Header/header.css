@@ -14,10 +14,12 @@
   letter-spacing: 1px;
   color: #FFFFFF;
 }
+
 .header {
   border-radius: 0 0 30px 30px;
   background-color: #a6a29f44;
 }
+
 .client{
   border-radius: 0 0 30px 30px;
 }
@@ -26,4 +28,5 @@
   font-size: 18px;
   color: #A6A29F;
   padding: 15px 0;
+  text-align: center;
 }

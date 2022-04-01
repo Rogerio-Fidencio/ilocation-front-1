@@ -23,28 +23,33 @@ body{
     width: 90%;
 }
 
-.alinhar-btn{
+.align-btn{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    gap: 30px;
 }
 
-.btn-tracking { 
-    background-color: #EA1D2C ;
-    color: #ffffff;
-    width: 120px;
+.btn-confirm, .btn-cancel { 
+    all: unset;
+    padding: .3rem .75rem;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: .5rem;
+    transition: all ease-in .5s;
 }
 
-.btn-verde{
-    background-color: green;
+.btn-confirm {
+    background-color: #EA1D2C;
 }
 
-.btn-tracking:hover{
-    background-color: #DA5D69 ;
-    color: #ffffff;
+.btn-confirm:hover{
+    background-color: #9C050B;
 }
 
-.btn-verde:hover{
-    background-color: rgba(6, 219, 6, 0.884);
+.btn-cancel{
+    background-color: #A6A29F;
+}
+
+.btn-cancel:hover {
+    background-color: #8f8b8b
 }
