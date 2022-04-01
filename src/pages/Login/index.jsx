@@ -16,7 +16,6 @@ function Login() {
   const [ openEye, setOpenEye ] = useState(false);
   const navigate = useNavigate();
   
-  //[inputs controlados] guardando o que o usuário digitar
   const handleChange = (prop) => event => {
     setUser({ ...user, [prop]: event.target.value });
   };

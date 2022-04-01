@@ -1,12 +1,9 @@
-import ordersList from './list';
-import { useEffect, 
-  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import useOrder from '../../hooks/useOrder';
 import Header from '../../Components/Header';
 import { Table, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-//import pinIcon from '../../assets/maps-black.svg';
 import './orders.css';
 
 function orderItem(order, handleModal) {
@@ -20,10 +17,6 @@ function orderItem(order, handleModal) {
           <span id={String(id)} className="info-address">
             {customerCep}, {customerNumRes} - {customerCompl}
           </span>
-          {/* <span id={String(id)}>
-            <img id={String(id)} className="pin-icon" src={pinIcon} alt="pin map icon" />
-            {(distancia / 1000).toFixed(1)}km
-          </span> */}
         </div>
       </td>
     </tr>
@@ -42,7 +35,6 @@ function Orders() {
 
   const handleLoadList = async() => {
     try {
-      console.log(getToken());
       const request = await fetch('https://ilocation.herokuapp.com/api/v1/order/available', {
         method: 'GET',
         headers: {
@@ -53,8 +45,6 @@ function Orders() {
 
       const response = await request.json();
 
-      console.log(response);
-
       setOrdersList(response);
     } catch (error) {
       console.log(error.message);
@@ -63,10 +53,10 @@ function Orders() {
   };
 
   const handleModal = (event) => {
-    console.log(event.target.id);
     setInfoModal(ordersList.find(
       order => order.id === Number(event.target.id)
     ));
+
     setShowModal(true);
   };
 
@@ -80,11 +70,14 @@ function Orders() {
         }
       });
 
+      if (request.status > 204) return;
+
       setOrderInfo({
         id: infoModal.id, 
         endereco: infoModal.endereco, 
         distancia: infoModal.distancia
       });
+
       navigate('/rastreio', { replace: true });
     } catch (error) {
       console.log(error.message);
@@ -113,21 +106,19 @@ function Orders() {
         </ModalHeader>
         <ModalBody>
           <p className='modal-p'>
-            {infoModal.customerCep}, {infoModal.customerNumRes} - {infoModal.customerCompl}
+            {/*validar campos vazios*/}
+            {infoModal.customerCep}, {infoModal.customerNumRes} - 
+            {infoModal.customerCompl}
           </p>
-          <br />
-          {/* <span className='modal-span'>
-            <img className='pin-icon' src={pinIcon} alt='pin map icon' />
-            {(infoModal.distancia / 1000).toFixed(1)}km
-          </span> */}
         </ModalBody>
         <ModalFooter>
           <Button className='modal-btn tracking' 
-            onClick={handleTrackingAssign}
-          >
+            onClick={handleTrackingAssign}>
             Iniciar rastreio
           </Button>
-          <Button className='modal-btn cancel' onClick={() => setShowModal(false)}>Cancelar</Button>
+          <Button className='modal-btn cancel' onClick={() => setShowModal (false)}>
+            Cancelar
+          </Button>
         </ModalFooter>
       </Modal>
     </>

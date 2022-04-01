@@ -1,27 +1,23 @@
-import { useEffect, useState } from 'react';
-import { MapContainer,Marker,TileLayer,Popup} from 'react-leaflet'
-import useGetLocation from '../../hooks/useGetLocation'
-import Header from '../../Components/Header';
-//import useAuth from '../../hooks/useAuth';
-import 'leaflet/dist/leaflet.css';
-import './tracking.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import useOrder from '../../hooks/useOrder';
-import { useNavigate } from 'react-router';
+import useGetLocation from '../../hooks/useGetLocation';
+import Header from '../../Components/Header';
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import './tracking.css';
 
 export default function Tracking() {
-  const navigate = useNavigate();
   const { getToken } = useAuth();
   const { orderInfo } = useOrder();
-  const [ change, setChange ] = useState(true);
   const { coords } = useGetLocation();
   const[ lastCoords, setLastCoords ] = useState({
     timestamp: 1,
     longitude: 1,
     latitude: 1
   });
-  let timeOut = null;
-
+  const navigate = useNavigate();
 
   if (!coords) {
     return <h1>Obtendo localização ...</h1>
@@ -29,15 +25,18 @@ export default function Tracking() {
 
   handleGeolocation();
 
-  async function handleGeolocation() {
+  const handleGeolocation = async() => {
     const  userCoords = {
       timestamp: coords[2],
       longitude: coords[1],
       latitude: coords[0]
     }; 
-    if(userCoords.latitude === lastCoords.latitude && userCoords.longitude === lastCoords.longitude){
-      return;
-    }
+
+    if(
+      userCoords.latitude === lastCoords.latitude &&
+      userCoords.longitude === lastCoords.longitude
+    ) return;
+
     setLastCoords(userCoords);
 
     try {
