@@ -21,25 +21,27 @@ export default function Tracking() {
   const navigate = useNavigate();
 
   if (!coords) {
-    return <Spinner color="danger">Loading...</Spinner>
+    return <Spinner color="danger" className='spinner'>Loading...</Spinner>
   }
+  
 
-  handleGeolocation();
-
+  
   const handleGeolocation = async() => {
     const  userCoords = {
       timestamp: coords[2],
       longitude: coords[1],
       latitude: coords[0]
     }; 
-
+    
     if(
       userCoords.latitude === lastCoords.latitude &&
       userCoords.longitude === lastCoords.longitude
-    ) return;
-
+      ){ 
+        return; 
+    }
+      
     setLastCoords(userCoords);
-
+    
     try {
       const request = await fetch('https://ilocation.herokuapp.com/api/v1/geolocation', {
         method: 'PUT',
@@ -49,15 +51,18 @@ export default function Tracking() {
         },
         body: JSON.stringify(userCoords)
       });
-
+      
       //console.log(request);
-
+      
     } catch (error) {
       console.log(error.message)
     }
     console.log('Peguei geolocalização!');
   }
 
+
+  handleGeolocation();
+    
   const handleConcludedOrder = async() => {
     try {
       const request = await fetch('https://ilocation.herokuapp.com/api/v1/order/status/delivered', {
